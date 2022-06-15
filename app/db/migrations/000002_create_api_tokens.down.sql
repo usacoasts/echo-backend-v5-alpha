@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS `api_user_tokens`;
