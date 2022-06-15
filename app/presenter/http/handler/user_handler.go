@@ -76,7 +76,7 @@ func (h *userHandler) Login(c echo.Context) error {
 
 	token, err := h.ApiUserTokenUseCase.CreateToken(user.ID)
 
-	if err == nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, "User Token Cannot Create")
 	}
 

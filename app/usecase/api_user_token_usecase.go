@@ -3,8 +3,9 @@ package usecase
 import (
 	"app/domain/model"
 	"app/domain/repository"
-	"github.com/golang-jwt/jwt"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 // ApiUserTokenUseCase interfase

@@ -77,12 +77,12 @@ func NewRouter(e *echo.Echo, h handler.AppHandler) {
 		SigningKey: []byte("secret"),
 	}*/
 
-	api := e.Group("/api")
-	// api 下はJWTの認証が必要
+	api := e.Group("/api/auth")
+	// api/authの下のルートはJWTの認証が必要
 	api.Use(middleware.JWTWithConfig(
 		middleware.JWTConfig{
 			ParseTokenFunc: CreateJWTGoParseTokenFunc([]byte("secret"), nil),
 		}))
-	api.GET("/restricted", h.Refresh)
+	api.GET("/refresh", h.Refresh)
 	api.POST("/logout", h.Logout)
 }

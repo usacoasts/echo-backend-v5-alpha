@@ -14,7 +14,7 @@ Echo
 #### echo backendコンテナに移動する
 ※ docker ps で起動中コンテナ確認
 
-docker exec -i -t echo-backend_back_1 sh
+docker exec -i -t echo-backend-v5-alpha_back_1 sh
 
 #### goモジュール参考
 https://blog.framinal.life/entry/2021/04/11/013819
@@ -67,9 +67,34 @@ go run migrate.go -exec up -f
 ### localhost:5566
 
 ### JWT TOKEN認証
-### token取得
-### jwt token 参考 https://qiita.com/unvavo/items/b344a3ded2df8fa65c58
-### curl -X POST -d 'username=test' -d 'password=test' localhost:5555/login
 
-#### token認証確認
-#### curl -H "Authorization: Bearer トークン" localhost:5555/restricted/welcome
+### サインアップ(会員登録)
+
+curl -X POST \
+-H 'Content-Type: application/json' \
+-d '{"name":"Golang man", "email":"test@gmail.com", "password":"test5555"}' \
+localhost:5566/api/signup
+
+### Response Data
+
+{"id":1,"name":"Golang man","email":"test@gmail.com","password":"$2a$10$/Yt3rqgEDNXf3Ot/Wf8qfempj/GJcGgv.f4cjioNvJXDR7kPgO2CS","created_at":"2022-06-15T15:30:03.1773644Z","updated_at":"2022-06-15T15:30:03.1773644Z"}
+
+### ログイン
+
+curl -X POST \
+-H 'Content-Type: application/json' \
+-d '{"email":"test@gmail.com", "password":"test5555"}' \
+localhost:5566/api/login
+
+### Response Data
+
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOnRydWUsImV4cCI6MTY1NTU2NjgyNn0.c1x7Eml70EkuvTT1DcfLlr9ECC7OuTUcQNDdbU74ot4"}
+
+### jwtTokenでユーザー情報取得
+
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOnRydWUsImV4cCI6MTY1NTU2NjgyNn0.c1x7Eml70EkuvTT1DcfLlr9ECC7OuTUcQNDdbU74ot4" localhost:5566/api/auth/refresh
+
+### Response Data
+
+{"id":1,"name":"Golang man","email":"test@gmail.com","password":"$2a$10$/Yt3rqgEDNXf3Ot/Wf8qfempj/GJcGgv.f4cjioNvJXDR7kPgO2CS","created_at":"2022-06-16T00:30:03+09:00","updated_at":"2022-06-16T00:30:03+09:00"}
+
