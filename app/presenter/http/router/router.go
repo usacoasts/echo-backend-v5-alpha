@@ -85,5 +85,7 @@ func NewRouter(e *echo.Echo, h handler.AppHandler) {
 			ParseTokenFunc: CreateJWTGoParseTokenFunc([]byte("secret"), nil),
 		}))
 	apiAuth.GET("/refresh", h.Refresh)
-	apiAuth.POST("/logout", h.Logout)
+
+	// ログアウトはまだです。
+	// apiAuth.POST("/logout", h.Logout)
 }
