@@ -65,8 +65,9 @@ func hello(c echo.Context) error {
 func NewRouter(e *echo.Echo, h handler.AppHandler) {
 	e.GET("/", hello)
 
-	e.POST("/api/signup", h.CreateUser)
-	e.POST("/api/login", h.Login)
+	api := e.Group("/api")
+	api.POST("/signup", h.CreateUser)
+	api.POST("/login", h.Login)
 
 	// https://qiita.com/x-color/items/24ff2491751f55e866cf
 	// ログイン後のtoken認証
@@ -77,12 +78,12 @@ func NewRouter(e *echo.Echo, h handler.AppHandler) {
 		SigningKey: []byte("secret"),
 	}*/
 
-	api := e.Group("/api/auth")
+	apiAuth := e.Group("/api/auth")
 	// api/authの下のルートはJWTの認証が必要
-	api.Use(middleware.JWTWithConfig(
+	apiAuth.Use(middleware.JWTWithConfig(
 		middleware.JWTConfig{
 			ParseTokenFunc: CreateJWTGoParseTokenFunc([]byte("secret"), nil),
 		}))
-	api.GET("/refresh", h.Refresh)
-	api.POST("/logout", h.Logout)
+	apiAuth.GET("/refresh", h.Refresh)
+	apiAuth.POST("/logout", h.Logout)
 }

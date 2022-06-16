@@ -5,7 +5,6 @@ import (
 	"app/domain/service"
 	"app/usecase"
 	"context"
-	"fmt"
 	"github.com/labstack/echo/v5"
 	"net/http"
 )
@@ -83,8 +82,6 @@ func (h *userHandler) Login(c echo.Context) error {
 	apiUserToken := &model.ApiUserToken{
 		User_ID: user.ID, Token: token,
 	}
-
-	fmt.Println(apiUserToken)
 
 	_, err = h.ApiUserTokenUseCase.InsertToken(apiUserToken)
 
