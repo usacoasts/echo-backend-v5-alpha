@@ -1,18 +1,20 @@
 # マルチステージングビルド
 # alpineは軽量版 こちらをデプロイする
-FROM golang:1.18-alpine as prod
+FROM golang:1.19-alpine as prod
 
 WORKDIR /go/src/app
 COPY ./app .
 
 RUN apk update && \
-    apk add curl && \
-    apk add --no-cache git \
+    apk add  curl && \
+    apk add --no-cache git
 
 EXPOSE 8080
 
+CMD ["go", "run", "main.go"]
+
 # ローカル開発環境用(ホットローディング)
-FROM golang:1.18 as dev
+FROM golang:1.19 as dev
 
 WORKDIR /go/src/app
 COPY ./app .
@@ -30,7 +32,7 @@ CMD ["fresh", "-c", "./fresh.conf"]
 EXPOSE 8080
 
 # ローカル開発環境用(ホットローディング + リモートデバッグ)
-FROM golang:1.18 as dev-debug
+FROM golang:1.19 as dev-debug
 
 WORKDIR /go/src/app
 COPY ./app .
