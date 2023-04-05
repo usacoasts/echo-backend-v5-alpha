@@ -3,7 +3,8 @@
 FROM golang:1.19-alpine as prod
 
 WORKDIR /go/src/app
-COPY ./app .
+# COPY ./app .
+COPY ./ /app
 
 RUN apk update && \
     apk add  curl && \
@@ -17,7 +18,8 @@ CMD ["go", "run", "main.go"]
 FROM golang:1.19 as dev
 
 WORKDIR /go/src/app
-COPY ./app .
+# COPY ./app .
+COPY ./ /app
 
 RUN apt-get update && \
     apt-get install curl && \
@@ -35,7 +37,8 @@ EXPOSE 8080
 FROM golang:1.19 as dev-debug
 
 WORKDIR /go/src/app
-COPY ./app .
+# COPY ./app .
+COPY ./ /app
 
 RUN apt-get update && \
     apt-get install curl && \
