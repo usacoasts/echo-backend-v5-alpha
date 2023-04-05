@@ -8,14 +8,9 @@ env:
  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
- # https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
  build-and-push-image:
-   # https://dev.classmethod.jp/articles/check-runs-on-params-on-workflow/
-   # https://github.blog/changelog/2022-11-09-github-actions-ubuntu-latest-workflows-will-use-ubuntu-22-04/
-   # https://stackoverflow.com/questions/69840694/what-does-ubuntu-latest-mean-for-github-actions
-   # https://zenn.dev/snowcait/articles/73e42154ed4654
    runs-on: ubuntu-latest
-   outputs: # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
+   outputs:
      tags: ${{ steps.meta.outputs.tags }}
    permissions:
      contents: read
