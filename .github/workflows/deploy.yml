@@ -63,7 +63,7 @@ jobs:
      - name: Create PR
        uses: peter-evans/create-pull-request@v4
        with:
-          token: ${{ secrets.REPO_GITHUB_TOKEN }} # token
+          token: ${{ secrets.REPO_GITHUB_TOKEN }} # 発行したtokenをecho-backend-v5-alphaにActions Secretsとして追加
           title: "Update echo-backend"
           base: main # ブランチ名
           draft: true
