@@ -4,74 +4,70 @@ on:
   pull_request:
 
 env:
- REGISTRY: ghcr.io
- IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
- # https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
- build-and-push-image:
-   # https://dev.classmethod.jp/articles/check-runs-on-params-on-workflow/
-   # https://github.blog/changelog/2022-11-09-github-actions-ubuntu-latest-workflows-will-use-ubuntu-22-04/
-   # https://stackoverflow.com/questions/69840694/what-does-ubuntu-latest-mean-for-github-actions
-   # https://zenn.dev/snowcait/articles/73e42154ed4654
-   runs-on: ubuntu-latest
-   outputs: # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
-     tags: ${{ steps.meta.outputs.tags }}
-   permissions:
-     contents: read
-     packages: write
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    permissions:
+      contents: read
+      packages: write
 
-   steps:
-     - name: Checkout repository
-       uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-     - name: Log in to the Container registry
-       # uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-       uses: docker/login-action@v2
-       with:
-         registry: ${{ env.REGISTRY }}
-         username: ${{ github.actor }}
-         password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to the Container registry
+        # uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-     - name: Extract metadata (tags, labels) for Docker
-       id: meta
-       # uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-       uses: docker/metadata-action@v4
-       with:
-         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        # uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-     - name: Build and push Docker image
-       # uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-       uses: docker/build-push-action@v4
-       with:
-         context: app
-         push: true
-         tags: ${{ steps.meta.outputs.tags }}
-         labels: ${{ steps.meta.outputs.labels }}
- update-manifest:
-   needs: build-and-push-image
-   runs-on: ubuntu-latest
-   steps:
-     - name: Checkout usacoasts/bff-sample-manifest
-       uses: actions/checkout@v3
-       with:
-         repository: usacoasts/bff-sample-manifest
-         ref: main # ブランチ名
-     - name: Update manifest file
-       env:
-         YAML_PATH: manifest/echo-backend-deployment.yaml
-         CONTAINER_NAME: echo-backend
-         IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
-       run: |
-         yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
-         cat ${YAML_PATH}
-     - name: Create PR
-       uses: peter-evans/create-pull-request@v4
-       with:
-          token: ${{ secrets.REPO_GITHUB_TOKEN }} # token
+      - name: Build and push Docker image
+        # uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v4
+        with:
+          context: app
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  update-manifest:
+    needs: build-and-push-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout usacoasts/bff-sample-manifest
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.REPO_GITHUB_TOKEN }}
+          repository: usacoasts/bff-sample-manifest
+          ref: main # ブランチ名
+      - name: Update manifest file
+        env:
+          YAML_PATH: manifest/echo-backend-deployment.yaml
+          CONTAINER_NAME: echo-backend
+          IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
+        run: |
+          yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
+          cat ${YAML_PATH}
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.REPO_GITHUB_TOKEN }} # 発行したtokenをecho-backend-v5-alphaにActions Secretsとして追加
           title: "Update echo-backend"
           base: main # ブランチ名
-          draft: true
+          draft: False
           body: |
             # Changes
             - Update `echo-backend` image
