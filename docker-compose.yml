@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: app/Dockerfile #Dockerfileの場所
-      target: prod        # 本番用
+      # target: prod        # 本番用
       # target: dev       # 開発用(ホットリロード)
       # target: dev-debug # 開発用(ホットリロード + リモートデバッグ)
     volumes:

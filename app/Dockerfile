@@ -39,7 +39,8 @@ CMD ["air", "-c", "./air.toml"]
 EXPOSE 8080
 
 # alpineは軽量版 こちらをデプロイする
-FROM golang:1.19-alpine as prod
+# FROM golang:1.19-alpine as prod
+FROM golang:1.19-alpine
 
 WORKDIR /go/src/app
 # COPY ./app .
