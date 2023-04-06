@@ -50,7 +50,7 @@ jobs:
      - name: Checkout usacoasts/bff-sample-manifest
        uses: actions/checkout@v3
        with:
-         repository: usacoasts/bff-sample-manifest
+         repository: usacoasts/bff-sample-manifest.git
          ref: main # ブランチ名
      - name: Update manifest file
        env:
