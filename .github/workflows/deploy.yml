@@ -50,7 +50,8 @@ jobs:
      - name: Checkout usacoasts/bff-sample-manifest
        uses: actions/checkout@v3
        with:
-         repository: usacoasts/bff-sample-manifest.git
+         token: ${{ secrets.REPO_GITHUB_TOKEN }}
+         repository: usacoasts/bff-sample-manifest
          ref: main # ブランチ名
      - name: Update manifest file
        env:
