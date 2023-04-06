@@ -67,7 +67,7 @@ jobs:
           token: ${{ secrets.REPO_GITHUB_TOKEN }} # 発行したtokenをecho-backend-v5-alphaにActions Secretsとして追加
           title: "Update echo-backend"
           base: main # ブランチ名
-          draft: true
+          draft: False
           body: |
             # Changes
             - Update `echo-backend` image
