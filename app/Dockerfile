@@ -1,7 +1,7 @@
 # マルチステージングビルド
 # alpineは軽量版 こちらをデプロイする
-# FROM golang:1.19-alpine as prod
-FROM golang:1.19-alpine
+FROM golang:1.19-alpine as prod
+# FROM golang:1.19-alpine
 
 WORKDIR /go/src/app
 # COPY ./app .
