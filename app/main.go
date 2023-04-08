@@ -11,12 +11,9 @@ import (
 	"log"
 )
 
-//Dockerコンテナで実行する時(production.confをもとに起動するとき)は起動時に-serverを指定
-var runServer = flag.Bool("server", false, "production is -server option require")
-
 func main() {
 	flag.Parse()
-	conf.NewConfig(*runServer)
+	conf.NewConfig()
 
 	// Echo instance
 	e := echo.New()

@@ -41,10 +41,10 @@ func getMysqlConn() *gorm.DB {
 
 func sqlConnect() (database *gorm.DB) {
 	DBMS := "mysql"
-	USER := "echo"
-	PASS := "golang"
+	USER := Current.Database.User
+	PASS := Current.Database.Password
 	PROTOCOL := "tcp(mysql:3306)"
-	DBNAME := "echo"
+	DBNAME := Current.Database.Database
 
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 

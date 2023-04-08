@@ -8,6 +8,5 @@ require (
 	github.com/golang-migrate/migrate/v4 v4.15.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/labstack/echo/v5 v5.0.0-20220201181537-ed2888cfa198
-	github.com/spf13/viper v1.10.1
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 )
