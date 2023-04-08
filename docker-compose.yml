@@ -9,7 +9,8 @@ services:
       # target: dev       # 開発用(ホットリロード)
       # target: dev-debug # 開発用(ホットリロード + リモートデバッグ)
     volumes:
-      - ./app:/go/src/app
+      # - ./app:/go/src/app
+      - ./app/:/app/
     # command: fresh -c ./fresh.conf
     # command: air -c ./air.toml # debug設定
     ports:

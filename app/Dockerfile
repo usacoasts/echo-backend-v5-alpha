@@ -3,30 +3,37 @@
 FROM golang:1.19-alpine as prod
 # FROM golang:1.19-alpine
 
-WORKDIR /go/src/app
-# COPY ./app .
-COPY ./ /app
-
 RUN apk update && \
     apk add  curl && \
     apk add --no-cache git
 
-EXPOSE 8080
+# WORKDIR /go/src/app
+WORKDIR /app
 
+# COPY ./app .
+COPY ./ /app
+
+# Dockerfile上でgoモジュールインストールは無理そう
+# RUN test -f /app/go.mod || go mod init app
+# RUN go mod download
+# RUN go mod tidy
+
+EXPOSE 8080
 CMD ["go", "run", "main.go"]
 
 # ローカル開発環境用(ホットローディング)
 FROM golang:1.19 as dev
-
-WORKDIR /go/src/app
-# COPY ./app .
-COPY ./ /app
 
 RUN apt-get update && \
     apt-get install curl && \
     apt-get install -y git
 
 RUN go install github.com/pilu/fresh@latest
+
+# COPY ./app .
+COPY ./ /app
+# WORKDIR /go/src/app
+WORKDIR /app
 
 # 下記のコマンドはどちらでも動く
 # CMD ["fresh"]
@@ -37,10 +44,6 @@ EXPOSE 8080
 # ローカル開発環境用(ホットローディング + リモートデバッグ)
 FROM golang:1.19 as dev-debug
 
-WORKDIR /go/src/app
-# COPY ./app .
-COPY ./ /app
-
 RUN apt-get update && \
     apt-get install curl && \
     apt-get install -y git
@@ -48,6 +51,11 @@ RUN apt-get update && \
 # freshとgo-delveを使いリモートデバッグができなかった為、airを使用
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 RUN go install github.com/cosmtrek/air@latest
+
+# COPY ./app .
+COPY ./ /app
+# WORKDIR /go/src/app
+WORKDIR /app
 
 CMD ["air", "-c", "./air.toml"]
 

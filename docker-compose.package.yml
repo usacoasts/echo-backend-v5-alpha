@@ -2,9 +2,10 @@ version: "3"
 
 services:
   back:
-    image: ghcr.io/usacoasts/echo-backend-v5-alpha:pr-4
+    image: ghcr.io/usacoasts/echo-backend-v5-alpha:pr-5
     volumes:
-      - ./app:/go/src/app
+      # - ./app:/go/src/app
+      - ./app/:/app/
     ports:
       - "5566:8080"
       - "2355:2345"
