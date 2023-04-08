@@ -7,11 +7,10 @@ RUN apk update && \
     apk add  curl && \
     apk add --no-cache git
 
-# WORKDIR /go/src/app
-WORKDIR /app
-
 # COPY ./app .
 COPY ./ /app
+# WORKDIR /go/src/app
+WORKDIR /app
 
 # Dockerfile上でgoモジュールインストールは無理そう
 # RUN test -f /app/go.mod || go mod init app
