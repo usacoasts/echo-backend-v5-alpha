@@ -7,6 +7,8 @@ RUN apk update && \
     apk add  curl && \
     apk add --no-cache git
 
+RUN go mod download github.com/go-sql-driver/mysql
+
 # COPY ./app .
 COPY ./ /app
 # WORKDIR /go/src/app
@@ -22,7 +24,6 @@ RUN apt-get update && \
     apt-get install curl && \
     apt-get install -y git
 
-RUN go mod download github.com/go-sql-driver/mysql
 RUN go install github.com/pilu/fresh@latest
 
 # COPY ./app .
