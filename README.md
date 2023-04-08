@@ -9,7 +9,7 @@ Echo
 ~~https://golang.org/dl/~~
 
 ### 使用方法
-`docker-compose up -d` で開発環境構築完了
+`docker-compose -f docker-compose.yml up -d` で開発環境構築完了
 
 #### echo backendコンテナに移動する
 ※ docker ps で起動中コンテナ確認

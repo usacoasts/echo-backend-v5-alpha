@@ -2,16 +2,9 @@ version: "3"
 
 services:
   back:
-    build:
-      context: .
-      dockerfile: app/Dockerfile #Dockerfileの場所
-      target: prod        # 本番用
-      # target: dev       # 開発用(ホットリロード)
-      # target: dev-debug # 開発用(ホットリロード + リモートデバッグ)
+    image: ghcr.io/usacoasts/echo-backend-v5-alpha:pr-4
     volumes:
       - ./app:/go/src/app
-    # command: fresh -c ./fresh.conf
-    # command: air -c ./air.toml # debug設定
     ports:
       - "5566:8080"
       - "2355:2345"
