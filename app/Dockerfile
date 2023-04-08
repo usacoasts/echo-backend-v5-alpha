@@ -2,22 +2,22 @@
 # alpineは軽量版 こちらをデプロイする
 FROM golang:1.19-alpine as prod
 # FROM golang:1.19-alpine
-ENV GO111MODULE=on
+
+#ENV GO111MODULE=on
 
 RUN apk update && \
     apk add  curl && \
     apk add --no-cache git
 
-# COPY ./app .
-COPY ./ /app
 # WORKDIR /go/src/app
 WORKDIR /app
 
-RUN test -f /app/go.mod || go mod init app
-RUN go get github.com/go-sql-driver/mysql && \
-    go mod download github.com/go-sql-driver/mysql
+# COPY ./app .
+COPY ./ /app
 
-RUN go mod tidy
+#RUN test -f /app/go.mod || go mod init app
+#RUN go get github.com/go-sql-driver/mysql && \
+#    go mod download github.com/go-sql-driver/mysql
 
 EXPOSE 8080
 CMD ["go", "run", "main.go"]
