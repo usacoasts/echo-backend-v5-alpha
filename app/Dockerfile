@@ -17,6 +17,8 @@ RUN test -f /app/go.mod || go mod init app
 RUN go get github.com/go-sql-driver/mysql && \
     go mod download github.com/go-sql-driver/mysql
 
+RUN go mod tidy
+
 EXPOSE 8080
 CMD ["go", "run", "main.go"]
 
