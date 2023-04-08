@@ -13,7 +13,7 @@ COPY ./ /app
 # WORKDIR /go/src/app
 WORKDIR /app
 
-RUN go mod init app
+RUN test -f /app/go.mod || go mod init app
 RUN go get github.com/go-sql-driver/mysql
 
 EXPOSE 8080
