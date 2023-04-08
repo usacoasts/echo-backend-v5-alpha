@@ -37,11 +37,11 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: app
-          # file: Dockerfile
+          file: ./Dockerfile
+          target: prod
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: prod
   update-manifest:
     needs: build-and-push-image
     runs-on: ubuntu-latest
