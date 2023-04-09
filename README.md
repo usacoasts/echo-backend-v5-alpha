@@ -97,4 +97,3 @@ curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwi
 ### Response Data
 
 {"id":1,"name":"Golang man","email":"test@gmail.com","password":"$2a$10$/Yt3rqgEDNXf3Ot/Wf8qfempj/GJcGgv.f4cjioNvJXDR7kPgO2CS","created_at":"2022-06-16T00:30:03+09:00","updated_at":"2022-06-16T00:30:03+09:00"}
-
