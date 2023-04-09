@@ -20,6 +20,9 @@ func getMysqlConn() *gorm.DB {
 
 	dsn := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 
+	print(DBHOST)
+	print(dsn)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
