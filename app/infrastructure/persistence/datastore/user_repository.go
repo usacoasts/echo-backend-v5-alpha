@@ -4,7 +4,7 @@ import (
 	"app/domain/model"
 	"app/domain/repository"
 	"context"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type userRepository struct {
@@ -48,10 +48,11 @@ func (r *userRepository) Create(u *model.User) (*model.User, error) {
 	return u, err
 }
 
+/**
 func (r *userRepository) Update(ctx context.Context, u *model.User) (*model.User, error) {
-	err := r.Conn.Model(u).Update(u).Error
+	err := r.Conn.Model(u).Updates(u).Error
 	return u, err
-}
+}*/
 
 func (r *userRepository) Delete(ctx context.Context, id int) error {
 	u := &model.User{ID: id}

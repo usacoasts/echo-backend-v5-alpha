@@ -6,7 +6,7 @@ import (
 	"app/infrastructure/persistence/datastore"
 	"app/presenter/http/handler"
 	"app/usecase"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // Interactor interfase Intractorは安易DIコンテナとしての役割を持つ.

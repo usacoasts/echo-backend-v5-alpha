@@ -1,9 +1,6 @@
 package conf
 
-import (
-	"fmt"
-	"github.com/spf13/viper"
-)
+import "os"
 
 // Config conf struct
 type Config struct {
@@ -21,29 +18,23 @@ type Config struct {
 }
 
 // Current runnnig configuration
-var Current *Config
+var Current Config
 
 // NewConfig プロジェクトのコンフィグ設定をロードします.
-func NewConfig(runServer bool) {
-	var C Config
-	Current = &C
-	// viper.AddConfigPath("$GOPATH/app/conf/")
-
-	viper.AddConfigPath("conf/")
-	viper.SetConfigType("yml")
-
-	if runServer {
-		viper.SetConfigName("production")
-	} else {
-		viper.SetConfigName("local")
+func NewConfig() {
+	Current = Config{
+		Server: struct {
+			Port int
+			Mock bool
+		}{Port: 8080, Mock: false},
+		Database: struct {
+			Host     string
+			Port     string
+			User     string
+			Password string
+			Database string
+		}{Host: "mysql", Port: "3306", User: os.Getenv("MYSQL_USER"), Password: os.Getenv("MYSQL_PASSWORD"), Database: os.Getenv("MYSQL_DATABASE")},
 	}
 
-	if err := viper.ReadInConfig(); err != nil {
-		panic(fmt.Errorf("fatal conf file error: %s", err))
-	}
-
-	if err := viper.Unmarshal(&C); err != nil {
-		panic(fmt.Errorf("fatal conf file error: %s", err))
-	}
 	return
 }

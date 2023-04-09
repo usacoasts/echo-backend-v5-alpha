@@ -3,7 +3,7 @@ package datastore
 import (
 	"app/domain/model"
 	"app/domain/repository"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type apiUserTokenRepository struct {
