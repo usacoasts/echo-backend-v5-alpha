@@ -33,7 +33,7 @@ func NewConfig() {
 			User     string
 			Password string
 			Database string
-		}{Host: "mysql", Port: "3306", User: os.Getenv("MYSQL_USER"), Password: os.Getenv("MYSQL_PASSWORD"), Database: os.Getenv("MYSQL_DATABASE")},
+		}{Host: os.Getenv("MYSQL_HOST"), Port: "3306", User: os.Getenv("MYSQL_USER"), Password: os.Getenv("MYSQL_PASSWORD"), Database: os.Getenv("MYSQL_DATABASE")},
 	}
 
 	return

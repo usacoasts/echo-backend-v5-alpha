@@ -13,8 +13,10 @@ func NewDBConnection() *gorm.DB {
 func getMysqlConn() *gorm.DB {
 	USER := Current.Database.User
 	PASS := Current.Database.Password
-	PROTOCOL := "tcp(mysql:" + Current.Database.Port + ")"
+	DBHOST := Current.Database.Host
 	DBNAME := Current.Database.Database
+
+	PROTOCOL := "tcp(" + DBHOST + ":" + Current.Database.Port + ")"
 
 	dsn := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 
