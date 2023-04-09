@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/conf"
 	"flag"
 	"fmt"
 	"github.com/golang-migrate/migrate/v4"
@@ -9,13 +10,12 @@ import (
 	"os"
 )
 
-//sql and database info
+// sql and database info
 const (
-	Source   = "file://./migrations/"
-	Database = "mysql://echo:golang@tcp(mysql:3306)/echo"
+	Source = "file://./migrations/"
 )
 
-//declare command line options
+// declare command line options
 var (
 	Command = flag.String("exec", "", "set up or down as a argument")
 	Force   = flag.Bool("f", false, "force exec fixed sql")
@@ -29,6 +29,18 @@ var AvailableExecCommands = map[string]string{
 }
 
 func main() {
+
+	conf.NewConfig()
+
+	Current := conf.Current
+
+	USER := Current.Database.User
+	PASS := Current.Database.Password
+	DBHOST := Current.Database.Host
+	DBNAME := Current.Database.Database
+
+	Database := DBHOST + "://" + USER + ":" + PASS + "@tcp(" + DBHOST + ":3306)/" + DBNAME
+
 	flag.Parse()
 	if len(*Command) < 1 {
 		fmt.Println("\nerror: no argument\n")
@@ -51,8 +63,8 @@ func main() {
 	applyQuery(m, version, dirty)
 }
 
-//exec up or down sqls
-//with force option if needed
+// exec up or down sqls
+// with force option if needed
 func applyQuery(m *migrate.Migrate, version uint, dirty bool) {
 	if dirty && *Force {
 		fmt.Println("force=true: force execute current version sql")

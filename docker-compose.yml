@@ -27,6 +27,7 @@ services:
     networks:
       - go2-network
     environment:
+      - MYSQL_HOST=mysql
       - MYSQL_DATABASE=echo
       - MYSQL_ROOT_PASSWORD=golang
       - MYSQL_USER=echo
