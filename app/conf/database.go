@@ -1,10 +1,8 @@
 package conf
 
 import (
-	"fmt"
-	_ "github.com/go-sql-driver/mysql" //mysql
-	"github.com/jinzhu/gorm"
-	"time"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 // NewDBConnection 新規データベースコネクションを取得します.
@@ -13,62 +11,33 @@ func NewDBConnection() *gorm.DB {
 }
 
 func getMysqlConn() *gorm.DB {
-	// DBMS := "mysql"
 	USER := Current.Database.User
 	PASS := Current.Database.Password
 	PROTOCOL := "tcp(mysql:" + Current.Database.Port + ")"
 	DBNAME := Current.Database.Database
-	connectionString := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 
-	conn, err := gorm.Open("mysql", connectionString)
+	dsn := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
 	if err != nil {
 		panic(err)
 	}
 
-	err = conn.DB().Ping()
+	mysqlDB, err := db.DB()
 	if err != nil {
 		panic(err)
 	}
 
-	conn.LogMode(true)
-	conn.DB().SetMaxIdleConns(10)
-	conn.DB().SetMaxOpenConns(20)
-
-	conn.Set("gorm:table_options", "ENGINE=InnoDB")
-
-	return conn
-}
-
-func sqlConnect() (database *gorm.DB) {
-	DBMS := "mysql"
-	USER := Current.Database.User
-	PASS := Current.Database.Password
-	PROTOCOL := "tcp(mysql:3306)"
-	DBNAME := Current.Database.Database
-
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
-
-	count := 0
-	db, err := gorm.Open(DBMS, CONNECT)
+	err = mysqlDB.Ping()
 	if err != nil {
-		for {
-			if err == nil {
-				fmt.Println("")
-				break
-			}
-			fmt.Print(".")
-			time.Sleep(time.Second)
-			count++
-			if count > 10 {
-				fmt.Println("")
-				fmt.Println("DB接続失敗")
-				fmt.Println(err.Error())
-				panic(err)
-			}
-			db, err = gorm.Open(DBMS, CONNECT)
-		}
+		panic(err)
 	}
-	fmt.Println("DB接続成功")
+
+	// err = mysqlDB.SetMaxIdleConns(10)
+	// err = mysqlDB.SetMaxOpenConns(20)
+
+	db.Set("gorm:table_options", "ENGINE=InnoDB")
 
 	return db
 }

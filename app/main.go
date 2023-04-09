@@ -17,13 +17,19 @@ func main() {
 
 	// Echo instance
 	e := echo.New()
-	conn := conf.NewDBConnection()
+	db := conf.NewDBConnection()
+
+	mysqlDB, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+
 	defer func() {
-		if err := conn.Close(); err != nil {
+		if err := mysqlDB.Close(); err != nil {
 			log.Fatal(fmt.Sprintf("Failed to close: %v", err))
 		}
 	}()
-	i := interactor.NewInteractor(conn)
+	i := interactor.NewInteractor(db)
 	h := i.NewAppHandler()
 
 	router.NewRouter(e, h)
